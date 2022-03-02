@@ -116,8 +116,8 @@ public class ConsoleApp {
 
         return "Round #" + result.getRoundNumber() + ":" +
                 result.getWinnerPlayer().getPlayerName() +
-                " (" + result.getWinnerMove() + ") " +
+                " (" + result.getHumanMove() + ") " +
                 statusText + result.getLoserPlayer().getPlayerName() +
-                " (" + result.getLoserMove() + ")!";
+                " (" + result.getBotMove() + ")!";
     }
 }

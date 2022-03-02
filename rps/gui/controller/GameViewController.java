@@ -3,11 +3,11 @@ package rps.gui.controller;
 // Java imports
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
 import rps.bll.game.GameManager;
 import rps.bll.game.Move;
 import rps.bll.game.Result;
@@ -23,6 +23,10 @@ import java.util.ResourceBundle;
  * @author smsj
  */
 public class GameViewController implements Initializable {
+    public DialogPane dialogPane;
+    public StackPane stackPane;
+    @FXML
+    private TextField nameInput;
     @FXML
     private Label txtHumanName;
     @FXML
@@ -31,11 +35,8 @@ public class GameViewController implements Initializable {
     private ImageView imgHumanPick;
     @FXML
     private ImageView imgBotPick;
-    @FXML
-    private TextArea resultField;
 
-    private final static String BOT_NAME = "Pikachu";
-    private final static String PLAYER_NAME = "Tim";
+    private final static String BOT_NAME = "Detective Pikachu";
     private Image rockImage;
     private Image paperImage;
     private Image scissorsImage;
@@ -44,18 +45,29 @@ public class GameViewController implements Initializable {
     private IPlayer bot;
     private GameManager gameManager;
 
+
+    @FXML
+    private void newPlayer(){
+        try{
+            human.setPlayerName(nameInput.getText());
+            txtHumanName.setText(human.getPlayerName());
+            stackPane.getChildren().remove(dialogPane);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        human = new Player(PLAYER_NAME, PlayerType.Human);
+        human = new Player("Player", PlayerType.Human);
         bot = new Player(BOT_NAME, PlayerType.AI);
         gameManager = new GameManager(human, bot);
 
         txtBotName.setText(bot.getPlayerName());
-        txtHumanName.setText(human.getPlayerName());
-        resultField.setText("");
 
         rockImage = new Image("rps/gui/images/Rock.jpg");
         paperImage = new Image("rps/gui/images/Paper.jpg");
@@ -76,14 +88,9 @@ public class GameViewController implements Initializable {
 
     private void playRound(Move playerMove){
         Result result = gameManager.playRound(playerMove);
-        if(result.getWinnerPlayer().getPlayerType() == PlayerType.Human){
-            imgHumanPick.setImage(setPick(result.getWinnerMove()));
-            imgBotPick.setImage(setPick(result.getLoserMove()));
-        }
-        else{
-            imgBotPick.setImage(setPick(result.getWinnerMove()));
-            imgHumanPick.setImage(setPick(result.getLoserMove()));
-        }
+        imgHumanPick.setImage(setPick(result.getHumanMove()));
+        imgBotPick.setImage(setPick(result.getBotMove()));
+
     }
 
     private Image setPick(Move move){
