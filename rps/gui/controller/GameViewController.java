@@ -73,9 +73,10 @@ public class GameViewController implements Initializable {
 
         txtBotName.setText(bot.getPlayerName());
 
-        rockImage = new Image("rps/gui/images/Rock.jpg");
-        paperImage = new Image("rps/gui/images/Paper.jpg");
-        scissorsImage = new Image("rps/gui/images/Scissors.png");
+        rockImage = new Image("rps/gui/images/rocky.png");
+        paperImage = new Image("rps/gui/images/paper.png");
+        scissorsImage = new Image("rps/gui/images/Scissor.png");
+        cardBack = new Image("rps/gui/images/back.png");
     }
 
     public void pickRock(MouseEvent mouseEvent) {
