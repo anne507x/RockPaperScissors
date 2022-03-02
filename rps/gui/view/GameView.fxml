@@ -22,14 +22,14 @@
                         <VBox alignment="TOP_CENTER" spacing="50.0">
                            <children>
                               <Label fx:id="txtHumanName" text="Player" />
-                              <ImageView fx:id="imgHumanPick" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="imgHumanPick" fitHeight="300.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
                            </children>
                         </VBox>
                         <Label text="VS" />
                         <VBox alignment="TOP_CENTER" spacing="50.0">
                            <children>
                               <Label fx:id="txtBotName" text="Bot" />
-                              <ImageView fx:id="imgBotPick" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="imgBotPick" fitHeight="300.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
                            </children>
                         </VBox>
                      </children>
@@ -42,19 +42,19 @@
                         <Label text="Make your pick!" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                            <children>
-                              <ImageView fitHeight="150.0" fitWidth="150.0" onMousePressed="#pickRock" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="500.0" fitWidth="200.0" onMousePressed="#pickRock" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../images/Rock.jpg" />
+                                    <Image url="@../images/rocky.png" />
                                  </image>
                               </ImageView>
-                              <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="183.0" layoutY="10.0" onMousePressed="#pickPaper" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="500.0" fitWidth="200.0" layoutX="183.0" layoutY="10.0" onMousePressed="#pickPaper" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../images/Paper.jpg" />
+                                    <Image url="@../images/paper.png" />
                                  </image>
                               </ImageView>
-                              <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="268.0" layoutY="10.0" onMousePressed="#pickScissor" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="500.0" fitWidth="200.0" layoutX="268.0" layoutY="10.0" onMousePressed="#pickScissor" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../images/Scissors.png" />
+                                    <Image url="@../images/Scissor.png" />
                                  </image>
                               </ImageView>
                            </children>

@@ -20,6 +20,8 @@ import rps.bll.player.PlayerType;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.Delayed;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -79,32 +81,42 @@ public class GameViewController implements Initializable {
         cardBack = new Image("rps/gui/images/back.png");
     }
 
-    public void pickRock(MouseEvent mouseEvent) {
+    public void pickRock(MouseEvent mouseEvent) throws InterruptedException {
         playRound(Move.Rock);
     }
 
-    public void pickPaper(MouseEvent mouseEvent) {
+    public void pickPaper(MouseEvent mouseEvent) throws InterruptedException {
         playRound(Move.Paper);
     }
 
-    public void pickScissor(MouseEvent mouseEvent) {
+    public void pickScissor(MouseEvent mouseEvent) throws InterruptedException {
         playRound(Move.Scissor);
     }
 
-    private void playRound(Move playerMove){
+    private void playRound(Move playerMove) throws InterruptedException {
         Result result = gameManager.playRound(playerMove);
 
         playCardAnimation();
+        Thread thread = new Thread(){
+            public void run(){
+                try {
+                    Thread.sleep(1600);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                imgHumanPick.setImage(setPick(result.getHumanMove()));
+                imgBotPick.setImage(setPick(result.getBotMove()));;
+            }
+        };
+        thread.start();
 
-        imgHumanPick.setImage(setPick(result.getHumanMove()));
-        imgBotPick.setImage(setPick(result.getBotMove()));
     }
 
     private void playCardAnimation(){
         imgHumanPick.setImage(cardBack);
         imgBotPick.setImage(cardBack);
         RotateTransition rotateTransition = new RotateTransition();
-        rotateTransition.setDuration(Duration.millis(200));
+        rotateTransition.setDuration(Duration.millis(250));
         rotateTransition.setNode(imgBotPick);
         rotateTransition.setByAngle(-10);
         rotateTransition.setCycleCount(6);
@@ -112,7 +124,7 @@ public class GameViewController implements Initializable {
         rotateTransition.play();
 
         RotateTransition transition = new RotateTransition();
-        transition.setDuration(Duration.millis(200));
+        transition.setDuration(Duration.millis(250));
         transition.setNode(imgHumanPick);
         transition.setByAngle(10);
         transition.setCycleCount(6);
