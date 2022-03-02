@@ -1,6 +1,8 @@
 package rps.gui.controller;
 
 // Java imports
+import javafx.animation.RotateTransition;
+import javafx.animation.StrokeTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -8,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import javafx.util.Duration;
 import rps.bll.game.GameManager;
 import rps.bll.game.Move;
 import rps.bll.game.Result;
@@ -40,6 +43,7 @@ public class GameViewController implements Initializable {
     private Image rockImage;
     private Image paperImage;
     private Image scissorsImage;
+    private Image cardBack;
 
     private IPlayer human;
     private IPlayer bot;
@@ -88,8 +92,35 @@ public class GameViewController implements Initializable {
 
     private void playRound(Move playerMove){
         Result result = gameManager.playRound(playerMove);
+
+        playCardAnimation();
+
         imgHumanPick.setImage(setPick(result.getHumanMove()));
         imgBotPick.setImage(setPick(result.getBotMove()));
+    }
+
+    private void playCardAnimation(){
+        imgHumanPick.setImage(cardBack);
+        imgBotPick.setImage(cardBack);
+        RotateTransition rotateTransition = new RotateTransition();
+        rotateTransition.setDuration(Duration.millis(200));
+        rotateTransition.setNode(imgBotPick);
+        rotateTransition.setByAngle(-10);
+        rotateTransition.setCycleCount(6);
+        rotateTransition.setAutoReverse(true);
+        rotateTransition.play();
+
+        RotateTransition transition = new RotateTransition();
+        transition.setDuration(Duration.millis(200));
+        transition.setNode(imgHumanPick);
+        transition.setByAngle(10);
+        transition.setCycleCount(6);
+        transition.setAutoReverse(true);
+        transition.play();
+    }
+
+    private void playHoverAnimation(ImageView imageView){
+        
 
     }
 
