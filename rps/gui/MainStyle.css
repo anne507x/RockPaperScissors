@@ -4,7 +4,7 @@ BorderPane {
 
 Label {
     -fx-font-family: "Space Bd BT";
-    -fx-font-size: 25;
+    -fx-font-size: 30;
     -fx-text-fill: white;
 }
 .blackLabel {
