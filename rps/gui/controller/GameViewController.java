@@ -1,37 +1,45 @@
 package rps.gui.controller;
 
 // Java imports
+
 import javafx.animation.RotateTransition;
-import javafx.animation.StrokeTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.geometry.Insets;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import rps.bll.game.GameManager;
 import rps.bll.game.Move;
 import rps.bll.game.Result;
+import rps.bll.game.ResultType;
 import rps.bll.player.IPlayer;
 import rps.bll.player.Player;
 import rps.bll.player.PlayerType;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.concurrent.Delayed;
-import java.util.concurrent.TimeUnit;
 
 /**
  *
  * @author smsj
  */
 public class GameViewController implements Initializable {
-    public DialogPane dialogPane;
-    public StackPane stackPane;
     @FXML
-    private TextField nameInput;
+    private StackPane stackPane;
+    @FXML
+    private Label txtHumanWin;
+    @FXML
+    private Label txtTies;
+    @FXML
+    private Label txtBotWins;
     @FXML
     private Label txtHumanName;
     @FXML
@@ -45,24 +53,17 @@ public class GameViewController implements Initializable {
     private Image rockImage;
     private Image paperImage;
     private Image scissorsImage;
+    private Image pikaRock;
+    private Image pikaPaper;
+    private Image pikaScissors;
     private Image cardBack;
 
     private IPlayer human;
     private IPlayer bot;
     private GameManager gameManager;
 
+    private int humanWins, botWins, ties;
 
-    @FXML
-    private void newPlayer(){
-        try{
-            human.setPlayerName(nameInput.getText());
-            txtHumanName.setText(human.getPlayerName());
-            stackPane.getChildren().remove(dialogPane);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * Initializes the controller class.
@@ -75,10 +76,33 @@ public class GameViewController implements Initializable {
 
         txtBotName.setText(bot.getPlayerName());
 
-        rockImage = new Image("rps/gui/images/rocky.png");
-        paperImage = new Image("rps/gui/images/paper.png");
-        scissorsImage = new Image("rps/gui/images/Scissor.png");
-        cardBack = new Image("rps/gui/images/back.png");
+        rockImage = new Image("rps/gui/images/rocky small.png");
+        paperImage = new Image("rps/gui/images/paper small.png");
+        scissorsImage = new Image("rps/gui/images/scissors small.png");
+        pikaPaper = new Image("rps/gui/images/pika paper.png");
+        pikaRock = new Image("rps/gui/images/pika rock.png");
+        pikaScissors = new Image("rps/gui/images/pika scissors.png");
+        cardBack = new Image("rps/gui/images/back small.png");
+        newPlayer();
+    }
+
+    private void newPlayer() {
+        VBox vBox = new VBox();
+        vBox.setPadding(new Insets(20));
+        vBox.setSpacing(20);
+        vBox.setStyle("-fx-background-image: url('https://i.imgur.com/zjabPDi.jpg'); -fx-alignment: CENTER");
+        Label label = new Label("Please enter your name:");
+        label.setStyle("-fx-text-fill: black");
+        TextField textField = new TextField("Player");
+        textField.setMaxWidth(200);
+        Button button = new Button("OK");
+        button.setOnAction(event -> {
+            human.setPlayerName(textField.getText());
+            txtHumanName.setText(textField.getText());
+            stackPane.getChildren().remove(vBox);
+        });
+        vBox.getChildren().addAll(label, textField, button);
+        stackPane.getChildren().add(vBox);
     }
 
     public void pickRock(MouseEvent mouseEvent) throws InterruptedException {
@@ -95,21 +119,41 @@ public class GameViewController implements Initializable {
 
     private void playRound(Move playerMove) throws InterruptedException {
         Result result = gameManager.playRound(playerMove);
-
         playCardAnimation();
-        Thread thread = new Thread(){
-            public void run(){
-                try {
-                    Thread.sleep(1600);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                imgHumanPick.setImage(setPick(result.getHumanMove()));
-                imgBotPick.setImage(setPick(result.getBotMove()));;
-            }
-        };
-        thread.start();
 
+
+        Thread thread = new Thread(() -> {
+            try {
+                Thread.sleep(1600);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            setPick(result);
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    updateScores(result);
+                }
+            });
+        });
+        thread.start();
+    }
+
+    private void updateScores(Result result) {
+        if (result.getType() == ResultType.Tie){
+            ties++;
+            txtTies.setText(String.valueOf(ties));
+        }
+        else {
+            if (result.getWinnerPlayer().getPlayerType() == PlayerType.Human){
+                humanWins++;
+                txtHumanWin.setText(String.valueOf(humanWins));
+            }
+            else {
+                botWins++;
+                txtBotWins.setText(String.valueOf(botWins));
+            }
+        }
     }
 
     private void playCardAnimation(){
@@ -132,22 +176,23 @@ public class GameViewController implements Initializable {
         transition.play();
     }
 
-    private void playHoverAnimation(ImageView imageView){
-        
 
-    }
+    private void setPick(Result result){
+        Move humanMove = result.getHumanMove();
+        Move botMove = result.getBotMove();
 
-    private Image setPick(Move move){
-        if (move == Move.Rock)
-            return rockImage;
-
-        else if (move == Move.Paper)
-            return paperImage;
-
-        else if (move == Move.Scissor)
-            return scissorsImage;
-
+        if(humanMove == Move.Rock)
+            imgHumanPick.setImage(rockImage);
+        else if(humanMove == Move.Paper)
+            imgHumanPick.setImage(paperImage);
         else
-            return null;
+            imgHumanPick.setImage(scissorsImage);
+
+        if(botMove == Move.Rock)
+            imgBotPick.setImage(pikaRock);
+        else if (botMove == Move.Paper)
+            imgBotPick.setImage(pikaPaper);
+        else
+            imgBotPick.setImage(pikaScissors);
     }
 }

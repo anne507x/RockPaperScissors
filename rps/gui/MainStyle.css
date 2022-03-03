@@ -1,0 +1,12 @@
+BorderPane {
+    -fx-background-image: url('https://i.imgur.com/zjabPDi.jpg');
+}
+
+Label {
+    -fx-font-family: "Space Bd BT";
+    -fx-font-size: 25;
+    -fx-text-fill: white;
+}
+.blackLabel {
+    -fx-text-fill: black;
+}
