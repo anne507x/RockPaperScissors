@@ -6,7 +6,6 @@ import javafx.animation.RotateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -88,7 +87,6 @@ public class GameViewController implements Initializable {
 
     private void newPlayer() {
         VBox vBox = new VBox();
-        vBox.setPadding(new Insets(20));
         vBox.setSpacing(20);
         vBox.setStyle("-fx-background-image: url('https://i.imgur.com/zjabPDi.jpg'); -fx-alignment: CENTER");
         Label label = new Label("Please enter your name:");
