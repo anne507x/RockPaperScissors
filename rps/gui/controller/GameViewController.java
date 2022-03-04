@@ -88,9 +88,8 @@ public class GameViewController implements Initializable {
     private void newPlayer() {
         VBox vBox = new VBox();
         vBox.setSpacing(20);
-        vBox.setStyle("-fx-background-image: url('https://i.imgur.com/zjabPDi.jpg'); -fx-alignment: CENTER");
+        vBox.setStyle("-fx-background-image: url('https://images.unsplash.com/photo-1570475735025-6cd1cd5c779d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'); -fx-alignment: CENTER");
         Label label = new Label("Please enter your name:");
-        label.setStyle("-fx-text-fill: black");
         TextField textField = new TextField("Player");
         textField.setMaxWidth(200);
         Button button = new Button("OK");

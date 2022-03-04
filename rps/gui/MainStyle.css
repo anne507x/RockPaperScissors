@@ -1,12 +1,18 @@
 BorderPane {
-    -fx-background-image: url('https://i.imgur.com/zjabPDi.jpg');
+    -fx-background-image: url('https://images.unsplash.com/photo-1570475735025-6cd1cd5c779d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80');
 }
 
 Label {
-    -fx-font-family: "Space Bd BT";
+    -fx-font-family: "Bauhaus 93";
     -fx-font-size: 30;
     -fx-text-fill: white;
 }
-.blackLabel {
-    -fx-text-fill: black;
+
+TextField {
+    -fx-font-family: "Bauhaus 93";
+    -fx-font-size: 20;
+    -fx-text-fill: white;
+    -fx-background-color: lightpink;
+    -fx-border-color: white;
+
 }
